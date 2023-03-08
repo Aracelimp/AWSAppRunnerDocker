@@ -1,0 +1,27 @@
+# Base Image
+FROM node:14
+
+
+WORKDIR /app
+
+
+RUN apt-get update && \
+    apt-get install build-essential curl file git ruby-full locales --no-install-recommends -y && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -y update
+RUN apt-get install libpng16-16
+RUN apt-get -y install libreoffice 
+RUN apt-get -y install graphicsmagick
+RUN apt-get -y install imagemagick
+
+
+
+COPY package*.json ./
+RUN npm install --production
+EXPOSE 8100
+EXPOSE 4000
+EXPOSE 80
+COPY . .
+COPY ./ ./
+CMD [ "node", "app.js" ]
